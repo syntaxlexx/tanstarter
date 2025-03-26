@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState, type ComponentProps } from "react";
+import { toast } from "sonner";
 
 const REDIRECT_URL = "/dashboard";
 
@@ -99,9 +100,10 @@ function EmailPasswordSignIn() {
     }
 
     setIsLoading(true);
+    setError(null);
 
     if (isSignUp) {
-      const { data, error } = await authClient.signUp.email({
+      const { error } = await authClient.signUp.email({
         email,
         password,
         name,
@@ -112,14 +114,16 @@ function EmailPasswordSignIn() {
 
       if (error) {
         setError(error.message || "An error occurred");
+        return;
       }
 
-      console.log(data);
+      toast.success("Account created successfully");
+      setIsSignUp(false);
 
       return;
     }
 
-    const { data, error } = await authClient.signIn.email({
+    const { error } = await authClient.signIn.email({
       email,
       password,
       callbackURL: REDIRECT_URL,
@@ -129,9 +133,8 @@ function EmailPasswordSignIn() {
 
     if (error) {
       setError(error.message || "An error occurred");
+      return;
     }
-
-    console.log(data);
   };
 
   return (
