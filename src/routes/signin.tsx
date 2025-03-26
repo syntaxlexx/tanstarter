@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import authClient from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import type { ComponentProps } from "react";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useState, type ComponentProps } from "react";
 
 const REDIRECT_URL = "/dashboard";
 
@@ -24,7 +25,9 @@ function Page() {
     <div className="flex min-h-screen items-center justify-center">
       <Card>
         <CardHeader>
-          <CardTitle>Logo Here</CardTitle>
+          <CardTitle>
+            <Link to="/">Logo Here</Link>
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
@@ -78,11 +81,131 @@ function SignInButton({ provider, label, className, ...props }: SignInButtonProp
 }
 
 function EmailPasswordSignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError("Please enter an email and password");
+      return;
+    }
+
+    setIsLoading(true);
+
+    if (isSignUp) {
+      const { data, error } = await authClient.signUp.email({
+        email,
+        password,
+        name,
+        callbackURL: REDIRECT_URL,
+      });
+
+      setIsLoading(false);
+
+      if (error) {
+        setError(error.message || "An error occurred");
+      }
+
+      console.log(data);
+
+      return;
+    }
+
+    const { data, error } = await authClient.signIn.email({
+      email,
+      password,
+      callbackURL: REDIRECT_URL,
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      setError(error.message || "An error occurred");
+    }
+
+    console.log(data);
+  };
+
   return (
-    <div className="flex flex-col gap-2">
-      <Input type="email" placeholder="Email" />
-      <Input type="password" placeholder="Password" />
-      <Button type="submit">Login</Button>
-    </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      {isSignUp && (
+        <Input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      )}
+
+      <Input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <div className="relative">
+        <Input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="absolute right-2 top-1/2 -translate-y-1/2"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? <Eye /> : <EyeOff />}
+        </Button>
+      </div>
+
+      {isSignUp && (
+        <div className="relative">
+          <Input
+            type={showPassword ? "text" : "password"}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-2 top-1/2 -translate-y-1/2"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <Eye /> : <EyeOff />}
+          </Button>
+        </div>
+      )}
+
+      <Button type="submit" disabled={isLoading}>
+        {isSignUp ? "Sign Up" : "Login"}
+        {isLoading && <Loader2 className="ml-2 size-4 animate-spin" />}
+      </Button>
+
+      {isSignUp ? (
+        <Button type="button" variant="link" onClick={() => setIsSignUp(false)}>
+          Already have an account? Login
+        </Button>
+      ) : (
+        <Button type="button" variant="link" onClick={() => setIsSignUp(true)}>
+          Don't have an account? Sign up
+        </Button>
+      )}
+
+      {error && <p className="text-red-500">{error}</p>}
+    </form>
   );
 }

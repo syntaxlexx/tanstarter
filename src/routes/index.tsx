@@ -59,6 +59,10 @@ function Home() {
         </div>
       )}
 
+      <Button type="button" asChild className="w-fit" size="lg">
+        <Link to="/dashboard">Dashboard</Link>
+      </Button>
+
       <ThemeToggle />
 
       <a

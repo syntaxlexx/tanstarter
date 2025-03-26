@@ -12,6 +12,7 @@ import { getWebRequest } from "@tanstack/react-start/server";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
+import { Toaster } from "@/components/ui/sonner";
 import { auth } from "@/lib/auth";
 import appCss from "@/styles/app.css?url";
 
@@ -55,6 +56,7 @@ function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
+      <Toaster richColors />
     </RootDocument>
   );
 }

@@ -1,3 +1,4 @@
+import LogoutButton from "@/components/logout-button";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -11,6 +12,7 @@ function DashboardIndex() {
       <pre className="rounded-md border bg-card p-1 text-card-foreground">
         routes/dashboard/index.tsx
       </pre>
+      <LogoutButton />
     </div>
   );
 }
