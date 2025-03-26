@@ -1,13 +1,17 @@
+import * as schema from "@/database/schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { admin, customSession } from "better-auth/plugins";
 
-import { db } from "./db";
+import { db } from "@/database/db";
 
 export const auth = betterAuth({
   baseURL: process.env.VITE_BASE_URL,
 
   database: drizzleAdapter(db, {
     provider: "pg",
+    usePlural: true,
+    schema,
   }),
 
   // https://www.better-auth.com/docs/concepts/session-management#session-caching
@@ -39,5 +43,15 @@ export const auth = betterAuth({
     enabled: true,
   },
 
-  plugins: [],
+  plugins: [
+    customSession(async ({ user, session }) => {
+      return {
+        user: {
+          ...user,
+        },
+        session,
+      };
+    }),
+    admin(),
+  ],
 });
