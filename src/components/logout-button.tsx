@@ -16,13 +16,14 @@ const LogoutButton = ({ children, redirectTo = "/signin" }: Props) => {
       onClick={async () => {
         setIsLoading(true);
         const resp = await authClient.signOut();
-        setIsLoading(false);
 
         if (resp.data?.success) {
           toast.success("Logged out successfully");
           if (window) {
             window.location.href = redirectTo;
           }
+        } else {
+          setIsLoading(false);
         }
       }}
       disabled={isLoading}
