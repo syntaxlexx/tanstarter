@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import authClient from "@/lib/auth-client";
 import { Link, createFileRoute, useRouter } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/(public)/")({
   component: Home,
   loader: ({ context }) => {
     return { user: context.user };

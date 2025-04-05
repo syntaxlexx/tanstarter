@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 const REDIRECT_URL = "/dashboard";
 
-export const Route = createFileRoute("/signin")({
+export const Route = createFileRoute("/(public)/signin")({
   component: Page,
   beforeLoad: async ({ context }) => {
     if (context.user) {
