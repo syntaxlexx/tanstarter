@@ -1,6 +1,4 @@
 import HeroSection from "@/components/hero-section";
-import SiteFooter from "@/components/site-footer";
-import SiteHeader from "@/components/site-header";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(public)/")({
@@ -11,11 +9,5 @@ export const Route = createFileRoute("/(public)/")({
 });
 
 function Home() {
-  return (
-    <div className="min-h-screen">
-      <SiteHeader />
-      <HeroSection />
-      <SiteFooter />
-    </div>
-  );
+  return <HeroSection />;
 }
