@@ -180,7 +180,7 @@ export const routeTree = rootRoute
       ]
     },
     "/(public)": {
-      "filePath": "(public)/route.ts",
+      "filePath": "(public)/route.tsx",
       "children": [
         "/(public)/signin",
         "/(public)/"
