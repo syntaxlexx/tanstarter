@@ -46,7 +46,7 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       ...seo({
-        title: "Sign In | " + site.name,
+        title: site.name,
         description: site.description,
       }),
     ],

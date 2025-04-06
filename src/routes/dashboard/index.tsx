@@ -1,18 +1,27 @@
 import LogoutButton from "@/components/logout-button";
+import { seo } from "@/lib/seo";
+import { site } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardIndex,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Dashboard | " + site.name,
+      }),
+    ],
+  }),
 });
 
 function DashboardIndex() {
   return (
-    <div className="flex flex-col gap-1">
-      Dashboard index page
-      <pre className="rounded-md border bg-card p-1 text-card-foreground">
-        routes/dashboard/index.tsx
-      </pre>
-      <LogoutButton />
+    <div className="container pt-16">
+      <div className="space-y-4">
+        <p>Dashboard index page</p>
+
+        <LogoutButton />
+      </div>
     </div>
   );
 }

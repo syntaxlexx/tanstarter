@@ -1,8 +1,8 @@
-import { site } from "@/lib/utils";
+import { cn, site } from "@/lib/utils";
 
-export default function SiteFooter() {
+export default function SiteFooter({ className }: { className?: string }) {
   return (
-    <footer className="mt-auto text-center py-6">
+    <footer className={cn("text-center py-6", className)}>
       <a
         className="text-muted-foreground underline hover:text-foreground"
         href={site.githubUrl}

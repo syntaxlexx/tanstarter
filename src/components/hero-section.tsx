@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 
 export default function HeroSection() {
   return (
-    <div className="relative isolate px-6 pt-14 lg:px-8">
+    <div className="relative isolate px-6 pt-14 lg:px-8" id="hero-section">
       <div className="mx-auto max-w-4xl py-32 sm:py-48 lg:py-56">
         {/* Purple gradient blur effect */}
         <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
