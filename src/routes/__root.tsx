@@ -1,3 +1,4 @@
+import { site } from "@/lib/utils";
 import type { QueryClient } from "@tanstack/react-query";
 import {
   createRootRouteWithContext,
@@ -14,6 +15,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import { Toaster } from "@/components/ui/sonner";
 import { auth } from "@/lib/auth";
+import { seo } from "@/lib/seo";
 import appCss from "@/styles/app.css?url";
 
 const getUser = createServerFn({ method: "GET" }).handler(async () => {
@@ -43,9 +45,10 @@ export const Route = createRootRouteWithContext<{
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      {
-        title: "TanStarter",
-      },
+      ...seo({
+        title: "Sign In | " + site.name,
+        description: site.description,
+      }),
     ],
     links: [{ rel: "stylesheet", href: appCss }],
   }),
@@ -72,7 +75,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
         <ScriptOnce>
           {`document.documentElement.classList.toggle(
             'dark',
-            localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            localStorage.theme === 'dark' || (!('app-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
             )`}
         </ScriptOnce>
 

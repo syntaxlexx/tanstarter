@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import authClient from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
+import { seo } from "@/lib/seo";
+import { cn, site } from "@/lib/utils";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState, type ComponentProps } from "react";
@@ -19,6 +20,14 @@ export const Route = createFileRoute("/(public)/signin")({
       });
     }
   },
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "Sign In | " + site.name,
+        description: site.description,
+      }),
+    ],
+  }),
 });
 
 function Page() {
