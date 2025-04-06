@@ -1,11 +1,11 @@
 import { seo } from "@/lib/seo";
 import { site } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
-import { ChartAreaInteractive } from "./-components/chart-area-interactive";
-import { SectionCards } from "./-components/sections-card";
 
-import { DataTable } from "./-components/data-table";
-import data from "./-components/data.json";
+import { ChartAreaInteractive } from "@/components/dashboard/chart-area-interactive";
+import { DataTable } from "@/components/dashboard/data-table";
+import data from "@/components/dashboard/data.json";
+import { SectionCards } from "@/components/dashboard/sections-card";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardIndex,

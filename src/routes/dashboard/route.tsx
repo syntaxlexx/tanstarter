@@ -1,7 +1,7 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { AppSidebar } from "./-components/app-sidebar";
-import { Header } from "./-components/header";
+import { AppSidebar } from "../../components/dashboard/app-sidebar";
+import { Header } from "../../components/dashboard/header";
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
