@@ -32,36 +32,58 @@ export const Route = createFileRoute("/(public)/signin")({
 
 function Page() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <Link to="/">Logo Here</Link>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <SignInButton
-              provider="discord"
-              label="Discord"
-              className="bg-[#5865F2] hover:bg-[#5865F2]/80"
-            />
-            <SignInButton
-              provider="github"
-              label="GitHub"
-              className="bg-neutral-700 hover:bg-neutral-700/80"
-            />
-            <SignInButton
-              provider="google"
-              label="Google"
-              className="bg-[#DB4437] hover:bg-[#DB4437]/80"
-            />
-          </div>
-          <p className="text-center">--OR--</p>
-          <h2>Login via Email and Password</h2>
-          <EmailPasswordSignIn />
-        </CardContent>
-      </Card>
+    <div className="flex min-h-screen">
+      {/* Left side - Hero Image */}
+      <div className="hidden w-1/2 lg:block">
+        <img
+          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+          alt="Abstract futuristic space visualization"
+          className="h-full w-full object-cover"
+        />
+      </div>
+
+      {/* Right side - Sign In Form */}
+      <div className="flex w-full items-center justify-center p-8 lg:w-1/2">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>
+              <Link to="/">
+                <h3 className="text-2xl font-bold">{site.name}</h3>
+              </Link>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <SignInButton
+                provider="discord"
+                label="Discord"
+                className="bg-[#5865F2] hover:bg-[#5865F2]/80"
+              />
+              <SignInButton
+                provider="github"
+                label="GitHub"
+                className="bg-neutral-700 hover:bg-neutral-700/80"
+              />
+              <SignInButton
+                provider="google"
+                label="Google"
+                className="bg-[#DB4437] hover:bg-[#DB4437]/80"
+              />
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+            <EmailPasswordSignIn />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
