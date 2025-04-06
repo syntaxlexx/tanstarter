@@ -1,17 +1,18 @@
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { AppSidebar } from "../../components/dashboard/app-sidebar";
-import { Header } from "../../components/dashboard/header";
 
-export const Route = createFileRoute("/dashboard")({
+import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { Header } from "@/components/dashboard/header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+
+export const Route = createFileRoute("/admin")({
   component: DashboardLayout,
   beforeLoad: async ({ context }) => {
     if (!context.user) {
       throw redirect({ to: "/signin", replace: true });
     }
 
-    if (context.user.role === "admin") {
-      throw redirect({ to: "/admin", replace: true });
+    if (context.user.role !== "admin") {
+      throw redirect({ to: "/dashboard", replace: true });
     }
 
     // `context.queryClient` is also available in our loaders

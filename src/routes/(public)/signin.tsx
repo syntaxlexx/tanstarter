@@ -229,6 +229,8 @@ function EmailPasswordSignIn() {
         {isLoading && <Loader2 className="ml-2 size-4 animate-spin" />}
       </Button>
 
+      {error && <p className="text-red-500 text-center">{error}</p>}
+
       {isSignUp ? (
         <Button type="button" variant="link" onClick={() => setIsSignUp(false)}>
           Already have an account? Login
@@ -238,8 +240,6 @@ function EmailPasswordSignIn() {
           Don't have an account? Sign up
         </Button>
       )}
-
-      {error && <p className="text-red-500">{error}</p>}
     </form>
   );
 }

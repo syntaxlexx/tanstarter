@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+    # Component Import
+    ## Description
+    Enforce that all component imports in files are picked first from the components folder, not @radix-ui components.
+
+    ## Rules
+    - Prefer importing from local components in the component folder instead of @radix-ui components

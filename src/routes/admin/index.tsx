@@ -7,12 +7,12 @@ import { DataTable } from "@/components/dashboard/data-table";
 import data from "@/components/dashboard/data.json";
 import { SectionCards } from "@/components/dashboard/sections-card";
 
-export const Route = createFileRoute("/dashboard/")({
+export const Route = createFileRoute("/admin/")({
   component: DashboardIndex,
   head: () => ({
     meta: [
       ...seo({
-        title: "Dashboard | " + site.name,
+        title: "Admin Dashboard | " + site.name,
       }),
     ],
   }),
@@ -27,7 +27,6 @@ function DashboardIndex() {
           <div className="px-4 lg:px-6">
             <ChartAreaInteractive />
           </div>
-
           <div className="max-w-full overflow-hidden">
             <DataTable data={data} />
           </div>
