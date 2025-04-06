@@ -1,6 +1,7 @@
-import SiteFooter from "@/components/site-footer";
-import SiteHeader from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { AppSidebar } from "./-components/app-sidebar";
+import { Header } from "./-components/header";
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
@@ -17,14 +18,13 @@ export const Route = createFileRoute("/dashboard")({
 
 function DashboardLayout() {
   return (
-    <div className="min-h-screen">
-      <div className="fixed inset-x-0 top-0 z-50 border-b bg-background/40 backdrop-blur-sm">
-        <SiteHeader />
-      </div>
-      <main className="container pt-16 min-h-[calc(100vh-5rem)]">
+    <SidebarProvider>
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <Header />
+
         <Outlet />
-      </main>
-      <SiteFooter className="bg-accent" />
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
