@@ -3,6 +3,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Table,
   TableBody,
   TableCell,
@@ -10,15 +19,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchUsers } from "@/queries/users";
-import { useQuery } from "@tanstack/react-query";
+import { deleteUserMutationOptions, fetchUsers } from "@/queries/users";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Loader2, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/users/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
+  const [userToDelete, setUserToDelete] = useState<string | null>(null);
+
   const {
     data,
     isFetching: isLoading,
@@ -26,6 +41,18 @@ function RouteComponent() {
   } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsers,
+  });
+
+  const { mutate: deleteUser, isPending: isDeleting } = useMutation({
+    ...deleteUserMutationOptions(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User deleted successfully");
+      setUserToDelete(null);
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to delete user");
+    },
   });
 
   return (
@@ -89,11 +116,56 @@ function RouteComponent() {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  <Button variant="outline" asChild>
-                    <Link to={`/admin/users/$userId`} params={{ userId: user.id }}>
-                      View
-                    </Link>
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" asChild>
+                      <Link to={`/admin/users/$userId`} params={{ userId: user.id }}>
+                        View
+                      </Link>
+                    </Button>
+                    <Dialog
+                      open={userToDelete === user.id}
+                      onOpenChange={(open) => !open && setUserToDelete(null)}
+                    >
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="text-destructive"
+                          onClick={() => setUserToDelete(user.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Delete User</DialogTitle>
+                          <DialogDescription>
+                            Are you sure you want to delete {user.name}? This action
+                            cannot be undone.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                          <Button
+                            variant="outline"
+                            onClick={() => setUserToDelete(null)}
+                            disabled={isDeleting}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            onClick={() => deleteUser(user.id)}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting && (
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            Delete
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

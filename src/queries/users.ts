@@ -76,3 +76,21 @@ export const createUserMutationOptions = () => ({
   mutationKey: ["users", "create"],
   mutationFn: (data: CreateUserInput) => createUser({ data }),
 });
+
+export const deleteUser = createServerFn({})
+  .validator((userId: string) => userId)
+  .handler(async ({ data: userId }) => {
+    console.info(`Deleting user with id ${userId}...`);
+    const deletedUser = await db.delete(users).where(eq(users.id, userId)).returning();
+
+    if (!deletedUser.length) {
+      throw new Error("User not found");
+    }
+
+    return deletedUser[0];
+  });
+
+export const deleteUserMutationOptions = () => ({
+  mutationKey: ["users", "delete"],
+  mutationFn: (userId: string) => deleteUser({ data: userId }),
+});
