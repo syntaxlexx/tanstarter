@@ -1,8 +1,8 @@
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
-import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { Header } from "@/components/dashboard/header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AdminSidebar } from "./-admin-sidebar";
 
 export const Route = createFileRoute("/admin")({
   component: DashboardLayout,
@@ -31,11 +31,14 @@ function DashboardLayout() {
 
   return (
     <SidebarProvider>
-      <AppSidebar variant="inset" />
+      <AdminSidebar variant="inset" user={state.user} />
+
       <SidebarInset>
         <Header user={state.user} />
 
-        <Outlet />
+        <div className="">
+          <Outlet />
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -18,6 +18,8 @@ import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as AdminIndexImport } from './routes/admin/index'
 import { Route as publicIndexImport } from './routes/(public)/index'
 import { Route as publicSigninImport } from './routes/(public)/signin'
+import { Route as AdminUsersIndexImport } from './routes/admin/users/index'
+import { Route as AdminUsersUserIdImport } from './routes/admin/users/$userId'
 
 // Create/Update Routes
 
@@ -60,6 +62,18 @@ const publicSigninRoute = publicSigninImport.update({
   id: '/signin',
   path: '/signin',
   getParentRoute: () => publicRouteRoute,
+} as any)
+
+const AdminUsersIndexRoute = AdminUsersIndexImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+
+const AdminUsersUserIdRoute = AdminUsersUserIdImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -115,6 +129,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexImport
       parentRoute: typeof DashboardRouteImport
     }
+    '/admin/users/$userId': {
+      id: '/admin/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AdminUsersUserIdImport
+      parentRoute: typeof AdminRouteImport
+    }
+    '/admin/users/': {
+      id: '/admin/users/'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersIndexImport
+      parentRoute: typeof AdminRouteImport
+    }
   }
 }
 
@@ -136,10 +164,14 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
 
 interface AdminRouteRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminUsersUserIdRoute: typeof AdminUsersUserIdRoute
+  AdminUsersIndexRoute: typeof AdminUsersIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
+  AdminUsersUserIdRoute: AdminUsersUserIdRoute,
+  AdminUsersIndexRoute: AdminUsersIndexRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
@@ -165,6 +197,8 @@ export interface FileRoutesByFullPath {
   '/signin': typeof publicSigninRoute
   '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/admin/users': typeof AdminUsersIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -172,6 +206,8 @@ export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
   '/admin': typeof AdminIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/admin/users': typeof AdminUsersIndexRoute
 }
 
 export interface FileRoutesById {
@@ -183,6 +219,8 @@ export interface FileRoutesById {
   '/(public)/': typeof publicIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -194,8 +232,16 @@ export interface FileRouteTypes {
     | '/signin'
     | '/admin/'
     | '/dashboard/'
+    | '/admin/users/$userId'
+    | '/admin/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/signin' | '/' | '/admin' | '/dashboard'
+  to:
+    | '/signin'
+    | '/'
+    | '/admin'
+    | '/dashboard'
+    | '/admin/users/$userId'
+    | '/admin/users'
   id:
     | '__root__'
     | '/(public)'
@@ -205,6 +251,8 @@ export interface FileRouteTypes {
     | '/(public)/'
     | '/admin/'
     | '/dashboard/'
+    | '/admin/users/$userId'
+    | '/admin/users/'
   fileRoutesById: FileRoutesById
 }
 
@@ -245,7 +293,9 @@ export const routeTree = rootRoute
     "/admin": {
       "filePath": "admin/route.tsx",
       "children": [
-        "/admin/"
+        "/admin/",
+        "/admin/users/$userId",
+        "/admin/users/"
       ]
     },
     "/dashboard": {
@@ -269,6 +319,14 @@ export const routeTree = rootRoute
     "/dashboard/": {
       "filePath": "dashboard/index.tsx",
       "parent": "/dashboard"
+    },
+    "/admin/users/$userId": {
+      "filePath": "admin/users/$userId.tsx",
+      "parent": "/admin"
+    },
+    "/admin/users/": {
+      "filePath": "admin/users/index.tsx",
+      "parent": "/admin"
     }
   }
 }
