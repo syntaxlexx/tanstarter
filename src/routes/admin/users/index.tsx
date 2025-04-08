@@ -29,8 +29,14 @@ function RouteComponent() {
   });
 
   return (
-    <div className="container space-y-4">
-      <Title>Users</Title>
+    <div className="container space-y-4 my-4">
+      <div className="flex justify-between items-center mb-4">
+        <Title className="mb-0">Users</Title>
+
+        <Button asChild>
+          <Link to="/admin/users/create">Create User</Link>
+        </Button>
+      </div>
 
       {fetchError && <div className="text-destructive">Error: {fetchError.message}</div>}
 
