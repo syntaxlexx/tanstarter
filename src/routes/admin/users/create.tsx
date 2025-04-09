@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createUserMutationOptions } from "@/queries/users";
+import { UserRole } from "@/types";
+import { ucwords } from "@acelords/js-utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
@@ -108,14 +110,21 @@ function RouteComponent() {
 
             <div className="space-y-2">
               <Label htmlFor="role">Role</Label>
-              <Select value={role} onValueChange={setRole} required>
+              <Select
+                value={role}
+                onValueChange={setRole}
+                required
+                defaultValue={UserRole.USER}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="user">User</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="moderator">Moderator</SelectItem>
+                  {Object.values(UserRole).map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {ucwords(role)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

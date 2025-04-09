@@ -1,10 +1,12 @@
 import { db } from "@/database/db";
 import { users } from "@/database/schema";
+import adminMiddleware from "@/middlewares/admin-middleware";
 import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { eq } from "drizzle-orm";
 
 export const fetchUsers = createServerFn({ method: "GET" })
+  .middleware([adminMiddleware])
   // .validator((postId: string) => postId)
   .handler(async () => {
     console.info(`Fetching users...`);
@@ -20,6 +22,7 @@ export const usersQueryOptions = () =>
   });
 
 export const findUser = createServerFn({ method: "GET" })
+  .middleware([adminMiddleware])
   .validator((userId: string) => userId)
   .handler(async ({ data }) => {
     console.info(`Fetching user with id ${data}...`);
@@ -43,6 +46,7 @@ export type CreateUserInput = {
 };
 
 export const createUser = createServerFn({ method: "POST" })
+  .middleware([adminMiddleware])
   .validator((input: CreateUserInput) => input)
   .handler(async ({ data }) => {
     // Check if email is already taken
@@ -78,6 +82,7 @@ export const createUserMutationOptions = () => ({
 });
 
 export const deleteUser = createServerFn({})
+  .middleware([adminMiddleware])
   .validator((userId: string) => userId)
   .handler(async ({ data: userId }) => {
     console.info(`Deleting user with id ${userId}...`);

@@ -15,6 +15,7 @@
     "auth:generate": "bunx --bun @better-auth/cli@latest generate --y --output ./src/database/schema/auth.schema.ts && prettier --write ./src/database/schema/auth.schema.ts"
   },
   "dependencies": {
+    "@acelords/js-utils": "^1.1.7",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
